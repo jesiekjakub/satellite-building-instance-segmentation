@@ -1,0 +1,30 @@
+services:
+  trainer:
+    build: .
+    image: aerial-segmentation-blackwell
+    container_name: aerial_segmentation_runtime
+
+    deploy:
+      resources:
+        limits:
+          memory: 26G       # Hard limit (Leaves ~6GB for your Linux Desktop)
+        reservations:
+          memory: 16G       # Guaranteed RAM
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu, compute, utility, video]
+    
+    # Shared memory: 12GB is plenty for YOLOv8 and leaves 14GB for the Model/System
+    shm_size: '12gb'
+
+    environment:
+      - WANDB_API_KEY=${WANDB_API_KEY}
+      - PYTHONUNBUFFERED=1
+      # Linux Permission Fix: Matches your user ID
+      - PUID=1000 
+      - PGID=1000
+
+    volumes:
+      # ONLY this line is needed. It maps your code AND your DVC data.
+      - .:/app
