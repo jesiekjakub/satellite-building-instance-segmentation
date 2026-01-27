@@ -1,0 +1,24 @@
+stages:
+  prepare:
+    cmd: python src/stages/data_prep.py
+    deps:
+      - data/raw
+      - src/stages/data_prep.py
+    params:
+      - data.img_size
+      - data.split_ratio
+    outs:
+      - data/processed
+
+  train:
+    cmd: python src/stages/train.py
+    deps:
+      - data/processed
+      - src/stages/train.py
+    params:
+      - train.model_name
+      - train.epochs
+      - train.batch_size
+    outs:
+      - runs/detect/train/weights/best.pt:
+          cache: false

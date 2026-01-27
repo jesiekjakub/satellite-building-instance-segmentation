@@ -1,0 +1,22 @@
+base:
+  project: satellite-segmentation
+  random_seed: 42
+
+data:
+  # Input/Output paths
+  raw_dir: "data/raw"
+  processed_dir: "data/processed"
+  dataset_yaml: "data/processed/data.yaml"
+  
+  # Image settings
+  img_size: 640
+  split_ratio: 0.8  # 80% train, 20% val
+
+train:
+  model_name: "yolov8m-seg.pt"  # Medium model (Good balance for 5070)
+  epochs: 50
+  batch_size: 24        # Adjusted for 12GB VRAM (Safe start)
+  workers: 8            # Matches your CPU power
+  optimizer: "AdamW"
+  lr0: 0.001
+  device: 0

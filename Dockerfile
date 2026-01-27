@@ -27,6 +27,11 @@ ENV UV_SYSTEM_PYTHON=1 \
 COPY pyproject.toml uv.lock* ./
 RUN uv sync --frozen --no-dev
 
+# Add the virtual environment to the System PATH
+# This ensures 'dvc', 'python', and 'yolo' work globally
+# -----------------------------------------------------------
+ENV PATH="/app/.venv/bin:$PATH"
+
 # 5. Copy DVC Configuration (CRITICAL STEP)
 # We must copy the .dvc folder so DVC knows what 'storage' is
 COPY .dvc/ ./.dvc/

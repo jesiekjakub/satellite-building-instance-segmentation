@@ -3,6 +3,8 @@ services:
     build: .
     image: aerial-segmentation-blackwell
     container_name: aerial_segmentation_runtime
+    tty: true
+    stdin_open: true
 
     deploy:
       resources:
@@ -28,3 +30,4 @@ services:
     volumes:
       # ONLY this line is needed. It maps your code AND your DVC data.
       - .:/app
+      - /app/.venv
