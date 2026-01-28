@@ -1,0 +1,57 @@
+schema: '2.0'
+stages:
+  prepare:
+    cmd: python src/stages/data_prep.py
+    deps:
+    - path: src/stages/data_prep.py
+      hash: md5
+      md5: c8d2c07bd5f4ee33244e9cd306a320e7
+      size: 4868
+    params:
+      params.yaml:
+        data.img_size: 500
+        data.subset: 1.0
+        data.test_ratio: 0.1
+        data.train_ratio: 0.7
+        data.val_ratio: 0.2
+    outs:
+    - path: data/processed
+      hash: md5
+      md5: 947505d048732e98396a6f33f7645b12.dir
+      size: 877888111
+      nfiles: 19331
+  train:
+    cmd: python src/stages/train.py
+    deps:
+    - path: data/processed
+      hash: md5
+      md5: 947505d048732e98396a6f33f7645b12.dir
+      size: 877888111
+      nfiles: 19331
+    - path: src/models/custom_unet.py
+      hash: md5
+      md5: d3dbc2e854c5f83daf856633dc9398bc
+      size: 3237
+    - path: src/stages/train.py
+      hash: md5
+      md5: b2ccf40774311989ec62ca1002071531
+      size: 5966
+    params:
+      params.yaml:
+        train.batch_size: 4
+        train.custom_config:
+          learning_rate: 0.0001
+          optimizer: Adam
+          save_path: runs/custom_model/weights/best.pth
+        train.epochs: 1
+        train.model_type: custom
+        train.yolo_config:
+          model_name: yolov8m-seg.pt
+          optimizer: AdamW
+          lr0: 0.001
+    outs:
+    - path: runs
+      hash: md5
+      md5: 69901fa4f64c298bbf3c752f712c65df.dir
+      size: 124260293
+      nfiles: 1

@@ -2,11 +2,13 @@ stages:
   prepare:
     cmd: python src/stages/data_prep.py
     deps:
-      - data/raw
       - src/stages/data_prep.py
     params:
       - data.img_size
-      - data.split_ratio
+      - data.subset
+      - data.train_ratio
+      - data.val_ratio
+      - data.test_ratio
     outs:
       - data/processed
 
@@ -15,10 +17,17 @@ stages:
     deps:
       - data/processed
       - src/stages/train.py
+      # We track the model architecture file so DVC knows to re-run if you change the code
+      - src/models/custom_unet.py  
     params:
-      - train.model_name
+      # Updated to match your new params.yaml structure
+      - train.model_type
       - train.epochs
       - train.batch_size
+      - train.yolo_config    # Tracks everything inside yolo_config
+      - train.custom_config  # Tracks everything inside custom_config
     outs:
-      - runs/detect/train/weights/best.pt:
+      # We track the entire runs folder because the output path changes dynamically
+      # (runs/segment vs runs/custom_model)
+      - runs:
           cache: false

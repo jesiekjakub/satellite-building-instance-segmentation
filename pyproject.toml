@@ -13,7 +13,7 @@ dependencies = [
     "torch",
     "torchvision",
     "torchaudio",
-    "datasets>=4.5.0",
+    "datasets==2.19.1",
 ]
 
 [[tool.uv.index]]

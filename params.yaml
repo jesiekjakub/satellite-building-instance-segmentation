@@ -3,20 +3,47 @@ base:
   random_seed: 42
 
 data:
-  # Input/Output paths
-  raw_dir: "data/raw"
+  hf_dataset: "keremberke/satellite-building-segmentation"
+  subset: 1.0           # Use 1.0 for full training
+  img_size: 500         # Fixed input size
   processed_dir: "data/processed"
-  dataset_yaml: "data/processed/data.yaml"
   
-  # Image settings
-  img_size: 640
-  split_ratio: 0.8  # 80% train, 20% val
+  # Splits
+  train_ratio: 0.7
+  val_ratio: 0.2
+  test_ratio: 0.1
 
 train:
-  model_name: "yolov8m-seg.pt"  # Medium model (Good balance for 5070)
-  epochs: 50
-  batch_size: 24        # Adjusted for 12GB VRAM (Safe start)
-  workers: 8            # Matches your CPU power
-  optimizer: "AdamW"
-  lr0: 0.001
+  # Options: "yolo" (Transfer Learning) or "custom" (Own Architecture)
+  model_type: "custom" 
+  
+  # Common settings
+  epochs: 1
+  batch_size: 2
+  img_size: 500
   device: 0
+  workers: 8
+  
+  # Model A: YOLO Specifics
+  yolo_config:
+    model_name: "yolov8m-seg.pt"
+    optimizer: "AdamW"
+    lr0: 0.001
+
+  # Model B: Custom Architecture Specifics
+  custom_config:
+    learning_rate: 0.0001
+    optimizer: "Adam" # Custom often prefers standard Adam
+    # We will save best weights here
+    save_path: "runs/custom_model/weights/best.pth"
+  
+  # Online Augmentations (Applied by YOLO every epoch)
+  augment:
+    degrees: 90.0      # Random rotation +/- 90 degrees
+    fliplr: 0.5        # 50% chance horizontal flip
+    flipud: 0.5        # 50% chance vertical flip (Satellite views allow this!)
+    scale: 0.5         # Zoom in/out (+/- 50%)
+    mosaic: 1.0        # Use Mosaic (stitches 4 images together) - Crucial for small objects
+    hsv_h: 0.015       # Color jitter (Hue)
+    hsv_s: 0.7         # Color jitter (Saturation)
+    hsv_v: 0.4         # Color jitter (Value/Brightness)
