@@ -26,6 +26,7 @@ services:
       # Linux Permission Fix: Matches your user ID
       - PUID=1000 
       - PGID=1000
+      - PYTORCH_ALLOC_CONF=expandable_segments:True
 
     volumes:
       # ONLY this line is needed. It maps your code AND your DVC data.

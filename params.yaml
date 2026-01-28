@@ -18,8 +18,8 @@ train:
   model_type: "custom" 
   
   # Common settings
-  epochs: 1
-  batch_size: 2
+  epochs: 5
+  batch_size: 4
   img_size: 500
   device: 0
   workers: 8
