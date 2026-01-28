@@ -14,36 +14,31 @@ data:
   test_ratio: 0.1
 
 train:
-  # Options: "yolo" (Transfer Learning) or "custom" (Own Architecture)
+  # Choose Model: "transfer" (1pk) or "custom" (2pk)
   model_type: "transfer" 
   
-  # Common settings
-  epochs: 1
+  # Hyperparameters
+  epochs: 10
   batch_size: 4
-  img_size: 500
-  device: 0
-  workers: 8
+  workers: 4
   
-  # Model A: YOLO Specifics
-  yolo_config:
-    model_name: "yolov8m-seg.pt"
-    optimizer: "AdamW"
-    lr0: 0.001
-
-  # Model B: Custom Architecture Specifics
+  # Configuration for your Custom Architecture
   custom_config:
     learning_rate: 0.0001
-    optimizer: "Adam" # Custom often prefers standard Adam
-    # We will save best weights here
+    optimizer: "Adam"
     save_path: "runs/custom_model/weights/best.pth"
   
-  # Online Augmentations (Applied by YOLO every epoch)
+  # Configuration for Transfer Learning (Baseline)
+  transfer_config:
+    learning_rate: 0.001 # Pre-trained models often need higher initial LR
+    optimizer: "AdamW"
+  
+  # Augmentations (Albumentations)
   augment:
-    degrees: 90.0      # Random rotation +/- 90 degrees
-    fliplr: 0.5        # 50% chance horizontal flip
-    flipud: 0.5        # 50% chance vertical flip (Satellite views allow this!)
-    scale: 0.5         # Zoom in/out (+/- 50%)
-    mosaic: 1.0        # Use Mosaic (stitches 4 images together) - Crucial for small objects
-    hsv_h: 0.015       # Color jitter (Hue)
-    hsv_s: 0.7         # Color jitter (Saturation)
-    hsv_v: 0.4         # Color jitter (Value/Brightness)
+    degrees: 90.0      
+    fliplr: 0.5        
+    flipud: 0.5        
+    scale: 0.5         
+    hsv_h: 0.015       
+    hsv_s: 0.7         
+    hsv_v: 0.4
