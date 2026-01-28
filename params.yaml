@@ -15,11 +15,11 @@ data:
 
 train:
   # Options: "yolo" (Transfer Learning) or "custom" (Own Architecture)
-  model_type: "custom" 
+  model_type: "transfer" 
   
   # Common settings
-  epochs: 5
-  batch_size: 3
+  epochs: 1
+  batch_size: 4
   img_size: 500
   device: 0
   workers: 8
