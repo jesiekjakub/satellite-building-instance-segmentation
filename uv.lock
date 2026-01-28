@@ -3128,7 +3128,7 @@ wheels = [
 ]
 
 [[package]]
-name = "satellite-yolo-blackwell"
+name = "satellite-blackwell"
 version = "0.1.0"
 source = { virtual = "." }
 dependencies = [
@@ -3138,6 +3138,7 @@ dependencies = [
     { name = "numpy" },
     { name = "opencv-python-headless" },
     { name = "pycocotools" },
+    { name = "python-dotenv" },
     { name = "pyyaml" },
     { name = "torch" },
     { name = "torchaudio" },
@@ -3155,6 +3156,7 @@ requires-dist = [
     { name = "numpy" },
     { name = "opencv-python-headless", specifier = ">=4.8.0" },
     { name = "pycocotools", specifier = ">=2.0.11" },
+    { name = "python-dotenv", specifier = ">=1.2.1" },
     { name = "pyyaml", specifier = ">=6.0" },
     { name = "torch", index = "https://download.pytorch.org/whl/test/cu128" },
     { name = "torchaudio", index = "https://download.pytorch.org/whl/test/cu128" },
