@@ -4,7 +4,6 @@ import random
 import math
 from dotenv import load_dotenv
 
-# --- Configuration
 load_dotenv()
 API_KEY = os.getenv('GOOGLE_API_KEY')
 OUTPUT_DIR = './data/raw'
@@ -12,7 +11,7 @@ SIZE = '500x500'
 ZOOM = 19          # High detail for building segmentation
 MAPTYPE = 'satellite'
 IMAGES_PER_CITY = 10
-RADIUS_KM = 4.0    # Radius around the city center
+RADIUS_KM = 4.0 
 
 # List of top 50 Polish cities with approximate center coordinates (Latitude, Longitude)
 CITIES = [

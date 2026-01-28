@@ -3,6 +3,8 @@ stages:
     cmd: python src/stages/data_prep.py
     deps:
       - src/stages/data_prep.py
+      - data/labeled/result.json
+      - data/labeled/images/
     params:
       - data.img_size
       - data.subset

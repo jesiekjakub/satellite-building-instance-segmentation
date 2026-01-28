@@ -3,10 +3,19 @@ stages:
   prepare:
     cmd: python src/stages/data_prep.py
     deps:
+    - path: data/labeled/images/
+      hash: md5
+      md5: e11b90be3574ba26e7e338318713bcc6.dir
+      size: 250845091
+      nfiles: 500
+    - path: data/labeled/result.json
+      hash: md5
+      md5: 768e54f68ab074162d189216a2201392
+      size: 1544664
     - path: src/stages/data_prep.py
       hash: md5
-      md5: c8d2c07bd5f4ee33244e9cd306a320e7
-      size: 4868
+      md5: dcbcb7ed2ee8b15f905d84d25dc80734
+      size: 8033
     params:
       params.yaml:
         data.img_size: 500
@@ -17,9 +26,9 @@ stages:
     outs:
     - path: data/processed
       hash: md5
-      md5: 947505d048732e98396a6f33f7645b12.dir
-      size: 877888111
-      nfiles: 19331
+      md5: 43894bec1c2a8487f718398bc589bb75.dir
+      size: 949620164
+      nfiles: 20331
   train:
     cmd: python src/stages/train.py
     deps:
