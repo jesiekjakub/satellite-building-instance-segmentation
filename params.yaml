@@ -14,11 +14,11 @@ data:
   test_ratio: 0.1
 
 train:
-  # Choose Model: "transfer" (1pk) or "custom" (2pk)
-  model_type: "transfer" 
+  # Choose Model: "transfer" or "custom"
+  model_type: "custom" 
   
   # Hyperparameters
-  epochs: 10
+  epochs: 5
   batch_size: 4
   workers: 4
   
@@ -30,7 +30,7 @@ train:
   
   # Configuration for Transfer Learning (Baseline)
   transfer_config:
-    learning_rate: 0.001 # Pre-trained models often need higher initial LR
+    learning_rate: 0.0015 # Pre-trained models often need higher initial LR
     optimizer: "AdamW"
   
   # Augmentations (Albumentations)
