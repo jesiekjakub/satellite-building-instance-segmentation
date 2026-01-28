@@ -6,27 +6,36 @@ from torchvision.models.detection.mask_rcnn import MaskRCNNPredictor
 def get_transfer_model(num_classes=2):
     """
     Creates a Mask R-CNN model with a ResNet-50-FPN backbone.
-    Pre-trained on COCO, with heads replaced for the new specific task.
+    Initially freezes the backbone to train the new heads.
     """
-    # 1. Load the pre-trained model (Weights downloaded automatically)
-    # weights="DEFAULT" loads the best available COCO weights
+    # 1. Load pre-trained COCO weights
     model = torchvision.models.detection.maskrcnn_resnet50_fpn(weights="DEFAULT")
 
-    # 2. Replace the Box Predictor (Bounding Box + Label)
-    # Get the input feature dimension of the existing classification head
+    # 2. Freeze the entire backbone initially
+    # This prevents the satellite gradients from 'destroying' pre-learned COCO features
+    for param in model.backbone.parameters():
+        param.requires_grad = False
+
+    # 3. Replace Box Predictor
     in_features = model.roi_heads.box_predictor.cls_score.in_features
-    # Replace it with a new one (num_classes=2: Background + Building)
     model.roi_heads.box_predictor = FastRCNNPredictor(in_features, num_classes)
 
-    # 3. Replace the Mask Predictor (Pixel-wise Segmentation)
-    # Get the input feature dimension of the existing mask head
+    # 4. Replace Mask Predictor
     in_features_mask = model.roi_heads.mask_predictor.conv5_mask.in_channels
     hidden_layer = 256
-    # Replace with a new predictor
     model.roi_heads.mask_predictor = MaskRCNNPredictor(
         in_features_mask,
         hidden_layer,
         num_classes
     )
 
+    return model
+
+def unfreeze_backbone(model):
+    """
+    Unfreezes the backbone layers for the fine-tuning phase.
+    """
+    for param in model.backbone.parameters():
+        param.requires_grad = True
+    print("Backbone unfrozen for fine-tuning.")
     return model
